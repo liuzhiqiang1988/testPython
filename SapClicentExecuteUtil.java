@@ -49,7 +49,9 @@ public class SapClicentExecuteUtil {
 	 * @return    {"state":"是否调用成功","data":"数据",message:"异常消息"}
 	 */
 	public JSONObject executeSap(String tableName ,JSONArray data,String funtionName,DataType type){
-		
+		if(data == null){
+			data = new JSONArray();
+		}
 		JCoDestination destination = DestinationProvider.connect();
 		JCoFunction function = null;
 		JSONObject backData = new JSONObject();
@@ -71,10 +73,12 @@ public class SapClicentExecuteUtil {
 			if("Import".equals(type.name())){   //使用ImportParameterList   传输数据
 				
 				if(StringUtils.isEmpty(tableName) ){
-					JSONObject item = data.getJSONObject(0);
-					item.forEach((K,V)->{
-						importParameterList.setValue(K, V);
-					});
+					if(data.size()>0){
+						JSONObject item = data.getJSONObject(0);
+						item.forEach((K,V)->{
+							importParameterList.setValue(K, V);
+						});
+					}
 				}else{
 					JCoTable table  = importParameterList.getTable(tableName);
 					for(int i=0;i<data.size();i++){
