@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, minimal-ui, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no">
+		<title>教育照明</title>
+		<style type="text/css">
+			* {
+				margin: 0;
+				padding: 0;
+				-webkit-box-sizing: border-box;
+				-moz-box-sizing: border-box;
+				box-sizing: border-box;
+			}
+			
+			html,
+			body {
+				height: 100%;
+				width: 100%;
+				max-width: 100%;
+				font-size: 10px;
+				margin: 0px;
+				padding: 0px;
+				font-family: "微软雅黑", serif;
+			}
+			
+			#container {
+				width: 100%;
+				height: 100%;
+				max-width: 100%;
+			}
+			
+			.scanPanel {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -100%);
+				height: 460px;
+				width: 334px;
+				padding: 50px;
+				border: 1px solid rgba(128, 128, 128, 0.63);
+				background-color: white;
+				border-radius: 20px;
+				z-index: 99;
+				font-size: 2.5rem;
+				text-align: center;
+				transition: opacity 1s, transform 1s;
+				-moz-transition: opacity 1s, transform 1s;
+				/* Firefox 4 */
+				-webkit-transition: opacity 1s, transform 1s;
+				/* Safari 和 Chrome */
+				-o-transition: opacity 1s, transform 1s;
+				/* Opera */
+				opacity: 0;
+			}
+			
+			.scanPanel.show {
+				transform: translate(-50%, -50%);
+				opacity: 1;
+			}
+			
+			.scanPanel>div:NTH-CHILD(3) {
+				font-size: 2rem;
+			}
+			
+			.scanPanel span {
+				color: #59c2e6;
+			}
+			
+			.scanPanel .scanning_icon {
+				display: inline-block;
+				height: 50px;
+				width: 50px;
+				float: left;
+				color: #59c2e6;
+			}
+			
+			#qrcode {
+				margin-top: 2rem;
+				margin-bottom: 2rem;
+			}
+			
+			.words {
+				padding-top: 32vh;
+				text-align: center;
+				color: rgba(63, 63, 63, 0.82);
+			}
+			
+			.words .w1 {
+				font-size: 6.5vh;
+				text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.16);
+			}
+			
+			.words .w2 {
+				padding-top: 2vh;
+				font-size: 4vh;
+			}
+			
+			.title {
+				position: absolute;
+				height: 10vh;
+				width: 100%;
+				padding: 2vh 2vw;
+				display: flex;
+				justify-content: space-between;
+			}
+			
+			.logo {
+				height: 100%;
+				font-size: 2.5rem;
+				font-weight: 700;
+				line-height: 2.5rem;
+				white-space: nowrap;
+			}
+			
+			.logo .R {
+				border: 1px solid;
+				border-radius: 50%;
+				padding: 0 0.3rem;
+				font-size: 0.6rem;
+				font-weight: 100;
+				position: relative;
+				top: -1.5rem;
+				margin-right: 0.5rem;
+			}
+			
+			.logo .O {
+				color: red
+			}
+			
+			.login {
+				height: 100%;
+			}
+			
+			.login>div {
+				display: inline-block;
+			}
+			
+			.botton {
+				font-size: 1.7vh;
+				height: 4vh;
+				width: 6vw;
+				line-height: 4vh;
+				padding: 0 2vh;
+				border-radius: 20px;
+				text-align: center;
+			}
+			
+			.botton.b1:ACTIVE {
+				background-color: #9ac2fb;
+			}
+			
+			.botton.b1 {
+				background-color: #59c2e6;
+				color: white;
+			}
+			
+			.wave {
+				width: 100%;
+				height: 35vh;
+				position: absolute;
+				bottom: 0;
+				background-repeat: repeat-x;
+				background-size: cover;
+				background-position: 0px 0px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="container" class="container" onclick="trigerQR()">
+			<div class="title">
+				<div class="logo">
+					<div>立达信<span class="R">R</span>有好光</div>
+					<div style="font-size: 2.7rem;">LEEDARS<span class="O">O</span>N</div>
+				</div>
+				<div class="login">
+					<div class="botton b1">登陆</div>
+					<div class="botton">English</div>
+				</div>
+			</div>
+			<div class="words">
+				<div class="w1">十年磨一剑&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;开始新征程</div>
+				<div class="w2">教育照明开启新篇章</div>
+			</div>
+			<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="30vh">
+				<g fill="rgba(106,0,239,1)">
+					  <path stroke="#000000" id="svg_1" d="m47,175c22,0 38,65 61,65c22,0 50,-65 73.38952,-65.8125c22.42188,0 36.53276,58.21876 58.95463,58.21876c22.42188,0 53.15474,-58.21876 75.57662,-58.21876c22.42188,0 36.97017,51.04688 59.39205,51.04688c22.42188,0 52.71733,-51.04688 75.1392,-51.04688c22.42188,0 66.27738,66.23437 88.69926,66.23437c22.42188,0 23.41012,-66.23437 45.83199,-66.23437l0,103.6875l-538.12501,0c0,-34.5625 0,-69.125 0,-103.6875z" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="null" fill="#d13232"/>
+					<animateTransform attributeName="transform" attributeType="XML" type="translate" from="0" to="-300" dur="5s" repeatCount="indefinite"></animateTransform>
+				</g>
+				<g fill="rgba(106,127,239,0.3)">
+					<path d="M 0 70 Q 87.5 47, 175 70 T 350 70 T 525 70 T 700 70 T 875 70 T 1050 70 V 100 H 0 V 0"></path>
+					<animateTransform attributeName="transform" attributeType="XML" type="translate" from="0" to="-350" dur="13s" repeatCount="indefinite"></animateTransform>
+				</g>
+				<g fill="rgba(106,127,239,0.3)" transform="translate(-903.868 0)">
+					<path d="M 0 70 Q 135 36, 270 70 T 540 70 T 810 70 T 1080 70 V 100 H 0 V 0" transform="translate(-38.232284367796474, 0)"></path>
+					<animateTransform attributeName="transform" attributeType="XML" type="translate" from="0" to="-540" dur="5s" repeatCount="indefinite"></animateTransform>
+				</g>
+			</svg>
+			<div class="scanPanel">
+				<div>LCP扫码&nbsp;安全登陆</div>
+				<div id="qrcode"></div>
+				<div>
+					<svg class="scanning_icon" t="1547779460689" class="icon" style="" viewBox="0 0 1027 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2657" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200">
+						<defs>
+							<style type="text/css"></style>
+						</defs>
+						<path fill="#59c2e6" d="M296.13128 98.422 98.71328 98.422 98.71328 295.84c0 21.815-17.668 39.484-39.484 39.484s-39.484-17.668-39.484-39.484l0-236.902c0-21.815 17.668-39.484 39.484-39.484L296.13128 19.454c21.815 0 39.484 17.668 39.484 39.484S317.94628 98.422 296.13128 98.422zM296.13128 1006.546 59.22928 1006.546c-21.815 0-39.484-17.669-39.484-39.484L19.74528 730.16c0-21.815 17.668-39.484 39.484-39.484s39.484 17.669 39.484 39.484l0 197.419L296.13128 927.579c21.815 0 39.484 17.669 39.484 39.484C335.61428 988.877 317.94628 1006.546 296.13128 1006.546zM967.35328 335.324c-21.815 0-39.484-17.668-39.484-39.484l0-197.418L730.45128 98.422c-21.815 0-39.484-17.668-39.484-39.484s17.669-39.484 39.484-39.484l236.901 0c21.815 0 39.484 17.668 39.484 39.484L1006.83628 295.84C1006.83628 317.655 989.16828 335.324 967.35328 335.324zM967.35328 1006.546 730.45128 1006.546c-21.815 0-39.484-17.669-39.484-39.484 0-21.815 17.669-39.484 39.484-39.484l197.418 0L927.86928 730.16c0-21.815 17.669-39.484 39.484-39.484 21.815 0 39.484 17.669 39.484 39.484l0 236.901C1006.83628 988.876 989.16828 1006.546 967.35328 1006.546zM0.00428 522.871c0-27.258 21.916-49.354 49.514-49.354l927.547 0c27.345 0 49.514 21.907 49.514 49.354 0 27.258-21.916 49.354-49.514 49.354L49.51728 572.225C22.17228 572.225 0.00428 550.319 0.00428 522.871z" p-id="2658"></path>
+					</svg>
+					<i></i>打开手机<span>LCP</span><br> 扫一扫登陆
+				</div>
+			</div>
+
+		</div>
+
+		<script src="resources/pcLogin/qrcode.min.js"></script>
+		<script src="resources/pcLogin/zepto.min.js"></script>
+		<script type="text/javascript">
+			var projectUrl = "http://lapp.leedarson.com:8081/ldseducationcrm";
+			//var SuccessjumpToUrl = "/ldssmp/p/mco/demo/userinfo";
+			var SuccessjumpToUrl = "/ldseducationcrm/p/mco/c/p";
+			var appid = "10159";
+			//var appid = "10184";
+
+			function blowWave(selecter, factor) {
+				var elm = document.querySelector(selecter);
+				var nowx = elm.style.backgroundPositionX;
+				var nowxInt = nowx.replace("px", "");
+				nowxInt -= (0.25 * factor);
+				/* if (nowxInt<=-1500) {
+     		nowxInt = 0;
+ 		} */
+				elm.style.backgroundPositionX = ''; //快速清空该规则的所有声明
+				elm.style.setProperty('background-position-x', nowxInt + 'px');
+			}
+
+			function getGuid() {
+				function S4() {
+					return(((1 + Math.random()) * 0x10000) | 0).toString(16)
+						.substring(1);
+				}
+				return(S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" +
+					S4() + S4() + S4());
+			}
+
+			function trigerQR() {
+				var elm = document.querySelector(".scanPanel");
+				var ClassNameStr = elm.className;
+				if(ClassNameStr.indexOf('show') > 0) {
+					closeQR();
+				} else {
+					showQR();
+				}
+
+			}
+
+			function closeQR() {
+				var elm = document.querySelector(".scanPanel");
+				elm.className = "scanPanel"
+				clearTimeout(window.stopValiscan);
+				clearInterval(window.valiscan);
+			}
+
+			function showQR() {
+				var elm = document.querySelector(".scanPanel");
+				elm.className = "scanPanel show"
+				window.stopValiscan = setTimeout(function() {
+					clearInterval(valiscan);
+					console.info('time up , stop the timer');
+					closeQR();
+				}, 30000);
+				window.valiscan = setInterval(function() {
+					$.getJSON('/ldseducationcrm/scanlogin2/valiscan', {
+						token: window.guid
+					}, function(data) {
+						if(data.status === 'true') {
+							// alert('授权成功');
+							clearInterval(window.valiscan);
+							window.location.href = SuccessjumpToUrl;
+							//+"?ticket="+data.result;
+						} else {
+							console.log(data);
+						}
+					})
+				}, 2000);
+			}
+
+			function jumpToPcHomePage() {
+				window.location.href = SuccessjumpToUrl;
+			}
+
+			function gengerateQRcode() {
+				window.guid = getGuid();
+				var str = projectUrl + "/scanlogin2?appid=" + appid + "&mid=101&token=" + guid;
+				var qrcode = new QRCode(document.getElementById("qrcode"), {
+					text: str,
+					width: 232,
+					height: 232,
+					colorDark: "#000000",
+					colorLight: "#FFFFFF",
+					typeNumber: 4,
+					correctLevel: QRCode.CorrectLevel.H
+				});
+
+				qrcode.clear();
+				qrcode.makeCode(str);
+			}
+
+			function c() {
+				$.getJSON(projectUrl + '/cookie/clean', {}, function(data) {})
+			}
+
+			function init() {
+				c();
+				gengerateQRcode();
+				//				requestAnimationFrame(function fn() {
+				//					blowWave(".wave1", 3.5);
+				//					blowWave(".wave2", 2.5);
+				//					blowWave(".wave3", 1.0);
+				//					requestAnimationFrame(fn);
+				//				});
+			}
+
+			init();
+		</script>
+	</body>
+
+</html>
